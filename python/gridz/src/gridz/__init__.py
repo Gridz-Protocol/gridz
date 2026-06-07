@@ -32,6 +32,7 @@ from .signer import (
 from .attest import build_cell_attestation, build_root_attestation
 from .grid import build_grid
 from .verify import verify_attestation, verify_cell, verify_grid
+from .client import GridzClient, GridzApiError
 
 __all__ = [
     "jcs",
@@ -63,4 +64,6 @@ __all__ = [
     "verify_attestation",
     "verify_cell",
     "verify_grid",
+    "GridzClient",
+    "GridzApiError",
 ]
