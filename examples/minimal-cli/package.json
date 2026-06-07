@@ -1,0 +1,28 @@
+{
+  "name": "@gridz/example-minimal-cli",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "tsup src/publish.ts --format esm --dts --clean",
+    "typecheck": "tsc --noEmit",
+    "lint": "oxlint src",
+    "test": "vitest run --coverage",
+    "demo": "node bin.ts"
+  },
+  "dependencies": {
+    "@gridz/cli": "workspace:*",
+    "@gridz/core": "workspace:*",
+    "@gridz/element": "workspace:*",
+    "@gridz/sinks": "workspace:*"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.2",
+    "@vitest/coverage-v8": "^2.1.8",
+    "oxlint": "^0.15.0",
+    "yaml": "^2.6.1",
+    "tsup": "^8.3.5",
+    "typescript": "^5.7.2",
+    "vitest": "^2.1.8"
+  }
+}

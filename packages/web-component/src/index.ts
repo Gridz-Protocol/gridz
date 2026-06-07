@@ -1,6 +1,13 @@
 import { verifyGrid, type Grid, type VerifyContext } from "@gridz/core";
 import { renderGrid, type BadgeStatus } from "./render.js";
 
+// Guarded base so the module (and its pure renderGrid export) can be imported in
+// Node/SSR where HTMLElement is undefined. The element is only ever instantiated
+// in a browser, where this resolves to the real HTMLElement.
+/* v8 ignore next 2 -- the Node fallback can't be exercised under jsdom */
+const ElementBase: typeof HTMLElement =
+  typeof HTMLElement !== "undefined" ? HTMLElement : (class {} as unknown as typeof HTMLElement);
+
 /**
  * <gridz-profile> — a framework-agnostic custom element. Set the `.grid`
  * property to a Grid object; it renders the Spritz aesthetic in a shadow root and
@@ -10,7 +17,7 @@ import { renderGrid, type BadgeStatus } from "./render.js";
  *   el.grid = myGrid;
  *   document.body.append(el);
  */
-export class GridzProfileElement extends HTMLElement {
+export class GridzProfileElement extends ElementBase {
   private _grid?: Grid;
   private _ctx?: VerifyContext;
 

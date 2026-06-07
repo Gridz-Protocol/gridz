@@ -15,6 +15,77 @@ importers:
         specifier: ^5.7.2
         version: 5.9.3
 
+  examples/minimal-cli:
+    dependencies:
+      '@gridz/cli':
+        specifier: workspace:*
+        version: link:../../packages/cli
+      '@gridz/core':
+        specifier: workspace:*
+        version: link:../../packages/core-ts
+      '@gridz/element':
+        specifier: workspace:*
+        version: link:../../packages/web-component
+      '@gridz/sinks':
+        specifier: workspace:*
+        version: link:../../packages/sinks-ts
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.19.20
+      '@vitest/coverage-v8':
+        specifier: ^2.1.8
+        version: 2.1.9(vitest@2.1.9(@types/node@22.19.20)(jsdom@25.0.1))
+      oxlint:
+        specifier: ^0.15.0
+        version: 0.15.15
+      tsup:
+        specifier: ^8.3.5
+        version: 8.5.1(postcss@8.5.15)(typescript@5.9.3)(yaml@2.9.0)
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@22.19.20)(jsdom@25.0.1)
+      yaml:
+        specifier: ^2.6.1
+        version: 2.9.0
+
+  examples/oneclaw-quickstart:
+    dependencies:
+      '@gridz/cli':
+        specifier: workspace:*
+        version: link:../../packages/cli
+      '@gridz/core':
+        specifier: workspace:*
+        version: link:../../packages/core-ts
+      '@gridz/oneclaw':
+        specifier: workspace:*
+        version: link:../../packages/oneclaw
+      '@gridz/sinks':
+        specifier: workspace:*
+        version: link:../../packages/sinks-ts
+    devDependencies:
+      '@types/node':
+        specifier: ^22.10.2
+        version: 22.19.20
+      '@vitest/coverage-v8':
+        specifier: ^2.1.8
+        version: 2.1.9(vitest@2.1.9(@types/node@22.19.20)(jsdom@25.0.1))
+      oxlint:
+        specifier: ^0.15.0
+        version: 0.15.15
+      tsup:
+        specifier: ^8.3.5
+        version: 8.5.1(postcss@8.5.15)(typescript@5.9.3)(yaml@2.9.0)
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@22.19.20)(jsdom@25.0.1)
+
   packages/cli:
     dependencies:
       '@gridz/core':

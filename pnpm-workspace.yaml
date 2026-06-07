@@ -1,3 +1,6 @@
 packages:
   - "packages/*"
-  - "examples/*"
+  # Only workspace-buildable examples here. next-app and scaffold-agent-grid are
+  # standalone reference apps (their own installs), excluded to keep CI light.
+  - "examples/minimal-cli"
+  - "examples/oneclaw-quickstart"
