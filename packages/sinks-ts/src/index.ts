@@ -22,6 +22,7 @@ export {
   unb64uJson,
   type LayoutEntry,
 } from "./ens/codec.js";
+export * from "./db/index.js";
 export { makeProbeGrid } from "./probe.js";
 export {
   sinkRoundTripTest,
