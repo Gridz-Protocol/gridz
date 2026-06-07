@@ -1,0 +1,45 @@
+# Gridz bootstrap template: humans-creator
+# Shape only — every value is null + _needs_input until you fill it.
+# Fill values, then: gridz grid validate && gridz grid build
+schema_version: gridz/1.0.0
+subject:
+  type: human
+  did: null
+theme:
+  background_type: solid
+  background_value: "#0b0b0f"
+  accent_color: "#7c5cff"
+  text_color: "#f4f4f5"
+  card_style: rounded
+  card_background: "#16161c"
+  font_family: sans
+  show_gridz_badge: true
+cells:
+  - key: alias
+    value: null
+    _needs_input: true
+    size: 1x1
+  - key: description
+    value: null
+    _needs_input: true
+    size: 2x1
+  - key: gridz.stats
+    value: null
+    _needs_input: true
+    size: 2x1
+    widget_type: gridz.stats
+  - key: gridz.currently
+    value: null
+    _needs_input: true
+    size: 2x1
+    widget_type: gridz.currently
+  - key: gridz.social_link
+    value: null
+    _needs_input: true
+    size: 1x1
+    widget_type: gridz.social_link
+  - key: gridz.message_me
+    value: null
+    _needs_input: true
+    size: 1x1
+    widget_type: gridz.message_me

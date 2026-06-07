@@ -1,0 +1,33 @@
+# Gridz bootstrap template: agents-mcp
+# Shape only — every value is null + _needs_input until you fill it.
+# Fill values, then: gridz grid validate && gridz grid build
+schema_version: gridz/1.0.0
+subject:
+  type: agent
+  did: null
+theme:
+  background_type: solid
+  background_value: "#0b0b0f"
+  accent_color: "#7c5cff"
+  text_color: "#f4f4f5"
+  card_style: rounded
+  card_background: "#16161c"
+  font_family: sans
+  show_gridz_badge: true
+cells:
+  - key: agent-context
+    value: null
+    _needs_input: true
+    size: 2x2
+  - key: agent-endpoint[mcp]
+    value: null
+    _needs_input: true
+    size: 1x1
+  - key: agent-endpoint[a2a]
+    value: null
+    _needs_input: true
+    size: 1x1
+  - key: agent.capabilities
+    value: null
+    _needs_input: true
+    size: 2x1
