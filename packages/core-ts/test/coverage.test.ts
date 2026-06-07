@@ -9,10 +9,17 @@ import {
   verifyAttestation,
   verifyCell,
   valueHash,
+  widgetTypeHash,
+  gridId,
+  gridzDomain,
+  GridzCell,
+  PRIMARY_TYPE_CELL,
+  eip712CellAttestation,
   publicKeyFromDidKey,
   Ed25519Signer,
   GridzError,
   ZERO32,
+  SCHEMA_VERSION,
   type Signer,
   type AttestationRef,
   type Cell,
@@ -164,6 +171,32 @@ describe("verifier — unsupported, time bounds, and cell-level expiry", () => {
     const r = await verifyGrid(broken);
     expect(r.root.status).toBe("unsupported");
     expect(r.ok).toBe(false);
+  });
+});
+
+describe("eip712CellAttestation (detached-signature / MCP flow)", () => {
+  it("assembles a verifiable attestation from a detached signature", async () => {
+    const signer = exampleEip712Signer();
+    const did = await signer.did();
+    const value = { hello: "world" };
+    const message = {
+      gridId: gridId("keccak256", did, SCHEMA_VERSION),
+      key: "gridz.note",
+      valueHashHex: valueHash("keccak256", value),
+      widgetTypeHash: widgetTypeHash("keccak256", undefined),
+      expiresAt: 0n,
+      nonce: 0n,
+    };
+    const domain = gridzDomain(EXAMPLE_CHAIN_ID, EXAMPLE_RESOLVER);
+    const { signature } = await signer.signTypedData({
+      domain,
+      types: { GridzCell },
+      primaryType: PRIMARY_TYPE_CELL,
+      message: message as unknown as Record<string, unknown>,
+    });
+    const att = eip712CellAttestation({ domain, message, signature, attester: did, now: NOW });
+    const r = await verifyAttestation(att, value, { subjectDid: did });
+    expect(r.ok).toBe(true);
   });
 });
 

@@ -154,6 +154,46 @@ export async function buildCellAttestation(
   throw new GridzError("attest/unsupported-format", `core cannot author format ${format}`);
 }
 
+/**
+ * Assemble a cell AttestationRef from a DETACHED EIP-712 signature (the message
+ * was signed elsewhere — a passkey host, an HSM, or an MCP client). This is the
+ * server-/agent-side counterpart to cell.prepare_write: Gridz prepares the typed
+ * data, something else signs it, and this stitches the verifiable envelope back
+ * together. The verifier cannot tell whether buildCellAttestation or this made it.
+ */
+export function eip712CellAttestation(opts: {
+  domain: { name: string; version: string; chainId: number; verifyingContract: Hex };
+  message: CellMessage;
+  signature: Hex;
+  attester: string;
+  format?: "eip712-raw" | "eip712-oneclaw";
+  now?: Date;
+}): AttestationRef {
+  const { message } = opts;
+  const payload = encodeBundle({
+    kind: "eip712",
+    domain: opts.domain,
+    types: { GridzCell },
+    primaryType: PRIMARY_TYPE_CELL,
+    message: serializeMessage(message as unknown as Record<string, unknown>, "GridzCell"),
+    signature: opts.signature,
+  });
+  const uid = keccak256(opts.signature);
+  const now = opts.now ?? new Date();
+  return {
+    format: opts.format ?? "eip712-raw",
+    uid,
+    uri: `data://inline/${uid}`,
+    attester: opts.attester,
+    iat: now.toISOString(),
+    value_hash: message.valueHashHex,
+    payload,
+    ...(message.expiresAt > 0n
+      ? { exp: new Date(Number(message.expiresAt) * 1000).toISOString() }
+      : {}),
+  };
+}
+
 export interface RootAttestInput {
   subjectDid: string;
   merkleRoot: Hex;

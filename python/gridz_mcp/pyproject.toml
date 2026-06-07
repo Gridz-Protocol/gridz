@@ -1,0 +1,37 @@
+[project]
+name = "gridz-mcp"
+version = "0.1.0"
+description = "Gridz MCP server (Python, FastMCP)."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "gridz",
+    "fastmcp>=2.0.0",
+    "pyyaml>=6.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3.4", "pytest-cov>=6.0.0"]
+
+[project.scripts]
+gridz-mcp = "gridz_mcp.server:main"
+
+[tool.uv.sources]
+gridz = { path = "../gridz", editable = true }
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gridz_mcp"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=gridz_mcp --cov-report=term-missing --cov-fail-under=85"
+
+[tool.coverage.run]
+# server.py is thin FastMCP wiring; its tool closures are exercised by the MCP
+# Inspector integration gate, not unit tests (see README).
+omit = ["*/gridz_mcp/server.py"]

@@ -26,6 +26,7 @@ export {
 export {
   buildCellAttestation,
   buildRootAttestation,
+  eip712CellAttestation,
   decodeBundle,
   type Bundle,
   type CellAttestInput,
