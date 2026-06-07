@@ -1,0 +1,194 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gridz.dev/specs/grid.schema.json",
+  "title": "Gridz Grid",
+  "description": "Canonical data model for a Gridz Grid: a cryptographically-attested profile composed of typed, signed cells plus a rendering layout. This schema is the single source of truth; SDKs, CLI, MCP, and config authoring all validate against it.",
+  "type": "object",
+  "$defs": {
+    "did": {
+      "type": "string",
+      "description": "W3C Decentralized Identifier. Supported methods: did:ethr, did:pkh, did:web, did:key, did:oneclaw. Other methods round-trip but are not first-class.",
+      "pattern": "^did:[a-z0-9]+:.+$",
+      "examples": [
+        "did:pkh:eip155:1:0x1234567890abcdef1234567890abcdef12345678",
+        "did:pkh:solana:mainnet:9xQeWvG816bUx9EPjHmaT23yvVM2ZWbrrpZb9PusVFin",
+        "did:ethr:1:0x1234567890abcdef1234567890abcdef12345678",
+        "did:web:gridz.dev",
+        "did:key:z6MkhaXgBZDvotDkL5257faiztiGiC2QtKLGpbnnEGta2doK",
+        "did:oneclaw:agent_01H9Z..."
+      ]
+    },
+    "key": {
+      "type": "string",
+      "description": "Field key. Inherited ENS global keys (lowercase + hyphen), ENS service keys (reverse dot notation), agent keys, or gridz.* widget keys. Dynamic keys are first-class.",
+      "pattern": "^[a-z0-9]([a-z0-9._\\-\\[\\]])*[a-z0-9\\]]$",
+      "maxLength": 256,
+      "examples": ["alias", "description", "com.github", "agent-endpoint[mcp]", "gridz.poll"]
+    },
+    "subject": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["type", "did"],
+      "properties": {
+        "type": {
+          "type": "string",
+          "enum": ["human", "agent", "organization"],
+          "description": "What kind of entity this Grid describes."
+        },
+        "did": { "$ref": "#/$defs/did" },
+        "ens": {
+          "type": "string",
+          "description": "Human-readable ENS name. MUST resolve via real lookup; never assumed. Itself attested as a cell when present.",
+          "examples": ["mygrid.eth"]
+        },
+        "sns": {
+          "type": "string",
+          "description": "Solana Name Service name. MUST resolve via real lookup; never assumed.",
+          "examples": ["mygrid.sol"]
+        },
+        "display_name": {
+          "type": "string",
+          "description": "Optional human-readable label. Not authoritative; the alias cell is.",
+          "maxLength": 200
+        }
+      }
+    },
+    "theme": {
+      "type": "object",
+      "description": "Render theme. Derivable from the ENSIP-18 'theme' text record when present.",
+      "additionalProperties": false,
+      "required": [
+        "background_type",
+        "background_value",
+        "accent_color",
+        "text_color",
+        "card_style",
+        "card_background",
+        "font_family"
+      ],
+      "properties": {
+        "background_type": { "type": "string", "enum": ["solid", "gradient", "image"] },
+        "background_value": {
+          "type": "string",
+          "description": "Color, CSS gradient string, or image URL depending on background_type."
+        },
+        "accent_color": { "$ref": "#/$defs/cssColor" },
+        "secondary_color": { "$ref": "#/$defs/cssColor" },
+        "text_color": { "$ref": "#/$defs/cssColor" },
+        "card_style": { "type": "string", "enum": ["rounded", "sharp", "soft"] },
+        "card_background": {
+          "type": "string",
+          "description": "Card surface color or gradient."
+        },
+        "card_border": { "type": "string" },
+        "font_family": {
+          "type": "string",
+          "description": "One of the built-in stacks (sans|serif|mono) or a Google Fonts family name.",
+          "examples": ["sans", "serif", "mono", "Inter", "JetBrains Mono"]
+        },
+        "show_gridz_badge": {
+          "type": "boolean",
+          "description": "Whether the renderer shows the Gridz attribution badge.",
+          "default": true
+        }
+      }
+    },
+    "cssColor": {
+      "type": "string",
+      "description": "A CSS color: hex, rgb(a), hsl(a), or a named color. Renderer enforces WCAG 4.5:1 contrast and falls back on failure.",
+      "examples": ["#0b0b0f", "rgb(11,11,15)", "hsl(240 5% 5%)"]
+    },
+    "cellPosition": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["x", "y", "w", "h"],
+      "properties": {
+        "x": { "type": "integer", "minimum": 0 },
+        "y": { "type": "integer", "minimum": 0 },
+        "w": { "type": "integer", "minimum": 1 },
+        "h": { "type": "integer", "minimum": 1 }
+      }
+    },
+    "cellSize": {
+      "type": "string",
+      "description": "Render size hint as WxH grid units. Common values: 1x1, 2x1, 1x2, 2x2, 3x1, 3x2. Arbitrary WxH is allowed.",
+      "pattern": "^[1-9][0-9]*x[1-9][0-9]*$"
+    },
+    "cell": {
+      "type": "object",
+      "description": "A typed key-value pair with its own independently-verifiable attestation.",
+      "additionalProperties": false,
+      "required": ["id", "key", "value", "position", "size", "is_visible", "attestation"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Stable, opaque cell identifier, unique within the Grid.",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "key": { "$ref": "#/$defs/key" },
+        "value": {
+          "description": "JSON-serializable value. Shape is constrained per-key by the widget/key schema registry (see specs/standard-keys.md). null is permitted only during authoring and MUST fail validation when _needs_input is set."
+        },
+        "widget_type": {
+          "type": "string",
+          "description": "Optional render hint. Unknown widget types fall back to the Generic renderer.",
+          "examples": ["gridz.poll", "gridz.clock", "gridz.social_link"]
+        },
+        "position": { "$ref": "#/$defs/cellPosition" },
+        "size": { "$ref": "#/$defs/cellSize" },
+        "is_visible": { "type": "boolean" },
+        "attestation": {
+          "$ref": "https://gridz.dev/specs/attestation.schema.json"
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date-time",
+          "description": "ISO-8601 optional revocation deadline. After this instant the cell renders as expired (amber badge)."
+        },
+        "_needs_input": {
+          "type": "boolean",
+          "description": "Authoring-only flag set by templates. A cell with _needs_input:true MUST fail `gridz grid validate` until the operator fills the value. Never present on a published Grid.",
+          "default": false
+        },
+        "_unattested": {
+          "type": "boolean",
+          "description": "Authoring-only flag set by import flows for cells derived from existing (e.g. ENS) records that the operator has not yet signed. MUST be resolved before publish.",
+          "default": false
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": { "_needs_input": { "const": true } },
+            "required": ["_needs_input"]
+          },
+          "then": {
+            "$comment": "Authoring guard surfaced to validators. Tooling treats _needs_input:true as a hard validation failure regardless of value."
+          }
+        }
+      ]
+    }
+  },
+  "additionalProperties": false,
+  "required": ["schema_version", "subject", "theme", "cells", "root_attestation"],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "gridz/1.0.0",
+      "description": "Pins the Grid model version. Bump on any breaking change to this schema."
+    },
+    "subject": { "$ref": "#/$defs/subject" },
+    "theme": { "$ref": "#/$defs/theme" },
+    "cells": {
+      "type": "array",
+      "description": "The Grid's cells. Each is independently verifiable; verifying one never requires the others.",
+      "items": { "$ref": "#/$defs/cell" },
+      "uniqueItems": false
+    },
+    "root_attestation": {
+      "$ref": "https://gridz.dev/specs/attestation.schema.json",
+      "description": "Attestation over the sorted merkle root of cell attestation UIDs (see specs/canonicalization.md). Binds the set of cells together without making any single cell depend on the others."
+    }
+  }
+}

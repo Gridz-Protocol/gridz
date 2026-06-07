@@ -1,0 +1,91 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://gridz.dev/specs/attestation.schema.json",
+  "title": "Gridz Attestation Envelope",
+  "description": "A portable, self-describing reference to the signed attestation that backs a cell or a Grid root. Verification of an attestation MUST NOT require trusting any sink, server, or vault: a consumer with only (subject did, attester public key, this envelope, value) can verify. Sinks are projections, not sources of truth.",
+  "type": "object",
+  "$defs": {
+    "hash32": {
+      "type": "string",
+      "description": "32-byte hash, lowercase hex with 0x prefix (keccak256 on EVM, sha256 on non-EVM; see specs/canonicalization.md).",
+      "pattern": "^0x[0-9a-f]{64}$"
+    },
+    "did": {
+      "type": "string",
+      "pattern": "^did:[a-z0-9]+:.+$"
+    },
+    "uri": {
+      "type": "string",
+      "description": "Location of the raw attestation. Supported schemes include eas:, eth:, ipfs:, ar:, https:, and data:. eas: URIs take the form eas://<chainId>/<uid>.",
+      "pattern": "^(eas|eth|ipfs|ar|https|data)://.+$|^eas://[0-9]+/0x[0-9a-fA-F]{64}$"
+    }
+  },
+  "additionalProperties": false,
+  "required": ["format", "uid", "uri", "attester", "iat", "value_hash"],
+  "properties": {
+    "format": {
+      "type": "string",
+      "description": "How the attestation was produced. eip712-oneclaw is byte-for-byte identical to eip712-raw at verification time; the suffix records provenance only and carries no trust weight.",
+      "enum": [
+        "eas-onchain",
+        "eas-offchain",
+        "eip712-raw",
+        "eip712-oneclaw",
+        "jws-ed25519",
+        "cose-webauthn"
+      ]
+    },
+    "uid": {
+      "type": "string",
+      "description": "Unique attestation identifier: the EAS uid for eas-*, the JWS jti for jws-ed25519, a derived hash for the others. Used as the merkle leaf for the Grid root.",
+      "minLength": 1
+    },
+    "uri": { "$ref": "#/$defs/uri" },
+    "attester": {
+      "$ref": "#/$defs/did",
+      "description": "DID of the signer. The recovered/verified public key MUST resolve to this DID, else verification fails."
+    },
+    "iat": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Issued-at time (ISO-8601)."
+    },
+    "nbf": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Optional not-before time (ISO-8601)."
+    },
+    "exp": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Optional expiry (ISO-8601). Mirrors the cell's expires_at when set."
+    },
+    "value_hash": {
+      "$ref": "#/$defs/hash32",
+      "description": "Hash of the canonicalized signed value: keccak256(JCS(cell.value)) on EVM, sha256(JCS(cell.value)) on non-EVM. For a root attestation this is the merkle root over cell UIDs."
+    },
+    "revocation": {
+      "type": "object",
+      "description": "Optional revocation pointer. Absence does not imply non-revocable; eas-* formats are revocable via the schema's revocable flag.",
+      "additionalProperties": false,
+      "required": ["method", "uri"],
+      "properties": {
+        "method": { "type": "string", "enum": ["eas", "status-list-2021"] },
+        "uri": { "type": "string" }
+      }
+    },
+    "payload": {
+      "type": "string",
+      "description": "Optional raw signed payload, base64url-encoded. Lets a verifier check the attestation fully offline without dereferencing uri.",
+      "pattern": "^[A-Za-z0-9_-]+$"
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "format": { "const": "cose-webauthn" } }, "required": ["format"] },
+      "then": {
+        "$comment": "COSE/WebAuthn attestations attest a value_hash via the authenticator; attester DID is typically did:key derived from the credential public key."
+      }
+    }
+  ]
+}
