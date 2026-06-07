@@ -1,0 +1,28 @@
+# Dependencies & builds — large, generated, not worth crawling
+node_modules/
+dist/
+out/
+.next/
+.turbo/
+coverage/
+*.tsbuildinfo
+
+# Python
+.venv/
+__pycache__/
+.pytest_cache/
+.hypothesis/
+*.egg-info/
+
+# Foundry
+contracts/out/
+contracts/cache/
+contracts/lib/
+
+# Lockfiles & secrets
+pnpm-lock.yaml
+uv.lock
+.env
+.env.*
+*.pem
+*.key

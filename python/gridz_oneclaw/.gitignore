@@ -1,0 +1,10 @@
+__pycache__/
+.venv/
+.pytest_cache/
+.hypothesis/
+.coverage
+*.egg-info/
+.ruff_cache/
+.mypy_cache/
+dist/
+.DS_Store

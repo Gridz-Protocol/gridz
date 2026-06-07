@@ -1,21 +1,48 @@
+# Dependencies
 node_modules/
+.pnpm-store/
+
+# Builds / outputs
 dist/
-coverage/
+out/
+.next/
+.vercel/
 .turbo/
 *.tsbuildinfo
-.env
-.env.*
-*.log
-.gridzrc
-.DS_Store
+*.tgz
+
+# Test / coverage
+coverage/
+.nyc_output/
+
+# Python
 __pycache__/
 .venv/
 .pytest_cache/
 .hypothesis/
 .coverage
+.coverage.*
 *.egg-info/
 .ruff_cache/
+.mypy_cache/
+
+# Foundry
 contracts/out/
 contracts/cache/
 contracts/lib/
 contracts/broadcast/
+
+# Secrets / env
+.env
+.env.*
+!.env.example
+.gridzrc
+*.pem
+*.key
+
+# Editor / OS
+.DS_Store
+Thumbs.db
+.idea/
+*.log
+*.local
