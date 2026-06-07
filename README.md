@@ -14,7 +14,8 @@ Early development. Spec-first, tests-first.
 | `@gridz/core` | ✅ types, JCS canonicalization, EIP-712, merkle, signers, universal verifier — 49 tests, 98% coverage |
 | Python `gridz` | ✅ byte-compatible mirror — 31 tests, 95% coverage; cross-runtime verified both directions |
 | `@gridz/sinks` | ✅ Sink interface + MemorySink + ENS sink (swappable backend) + round-trip harness; live ENS test gated on testnet creds |
-| Server, SDK, CLI, MCP, renderer, more sinks, 1claw, contracts | ⏳ per `BRIEF.md` §16 build order |
+| `@gridz/server` | ✅ Fastify + OpenAPI 3.1, attestation-validated writes, no key custody; `specs/openapi.yaml` generated from routes (18 tests) |
+| SDK, CLI, MCP, renderer, more sinks, 1claw, contracts | ⏳ per `BRIEF.md` §16 build order |
 
 ## Layout
 

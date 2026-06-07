@@ -1,0 +1,228 @@
+openapi: 3.1.0
+info:
+  title: Gridz API
+  version: 0.1.0
+  description: >-
+    Cryptographically-attested social graphs. Write endpoints require a signed
+    attestation; the server validates it against the subject DID and never
+    custodies keys.
+components:
+  schemas: {}
+paths:
+  /healthz:
+    get:
+      summary: Liveness
+      tags:
+        - system
+      responses:
+        '200':
+          description: Default Response
+  /readyz:
+    get:
+      summary: Readiness
+      tags:
+        - system
+      responses:
+        '200':
+          description: Default Response
+  /openapi.json:
+    get:
+      summary: OpenAPI document
+      tags:
+        - system
+      responses:
+        '200':
+          description: Default Response
+  /grids/{subject}:
+    get:
+      summary: Fetch a grid
+      tags:
+        - grids
+      parameters:
+        - schema:
+            type: string
+          in: path
+          name: subject
+          required: true
+          description: Subject DID (or ENS name)
+      responses:
+        '200':
+          description: Default Response
+    post:
+      summary: Upsert a grid (requires a signed root attestation)
+      tags:
+        - grids
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      parameters:
+        - schema:
+            type: string
+          in: path
+          name: subject
+          required: true
+          description: Subject DID (or ENS name)
+      responses:
+        '200':
+          description: Default Response
+  /grids/{subject}/cells/{key}:
+    get:
+      summary: Fetch a single cell
+      tags:
+        - cells
+      parameters:
+        - schema:
+            type: string
+          in: path
+          name: subject
+          required: true
+        - schema:
+            type: string
+          in: path
+          name: key
+          required: true
+      responses:
+        '200':
+          description: Default Response
+    put:
+      summary: Upsert a cell (requires a signed cell attestation)
+      tags:
+        - cells
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      parameters:
+        - schema:
+            type: string
+          in: path
+          name: subject
+          required: true
+        - schema:
+            type: string
+          in: path
+          name: key
+          required: true
+      responses:
+        '200':
+          description: Default Response
+    delete:
+      summary: Tombstone a cell (requires a revocation attestation)
+      tags:
+        - cells
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      parameters:
+        - schema:
+            type: string
+          in: path
+          name: subject
+          required: true
+        - schema:
+            type: string
+          in: path
+          name: key
+          required: true
+      responses:
+        '200':
+          description: Default Response
+  /verify:
+    post:
+      summary: Verify a grid or a single attestation
+      tags:
+        - verify
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      responses:
+        '200':
+          description: Default Response
+  /sinks:
+    get:
+      summary: List configured sinks
+      tags:
+        - sinks
+      responses:
+        '200':
+          description: Default Response
+  /sinks/{name}/publish:
+    post:
+      summary: Publish a stored grid's cells to a sink
+      tags:
+        - sinks
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: true
+      parameters:
+        - schema:
+            type: string
+          in: path
+          name: name
+          required: true
+      responses:
+        '200':
+          description: Default Response
+  /schemas/{key}:
+    get:
+      summary: Fetch the value schema for a standard key
+      tags:
+        - schemas
+      parameters:
+        - schema:
+            type: string
+          in: path
+          name: key
+          required: true
+      responses:
+        '200':
+          description: Default Response
+  /templates:
+    get:
+      summary: List bootstrap templates (shape only)
+      tags:
+        - templates
+      responses:
+        '200':
+          description: Default Response
+  /templates/{name}:
+    get:
+      summary: Fetch a template's shape
+      tags:
+        - templates
+      parameters:
+        - schema:
+            type: string
+          in: path
+          name: name
+          required: true
+      responses:
+        '200':
+          description: Default Response
+tags:
+  - name: grids
+  - name: cells
+  - name: verify
+  - name: sinks
+  - name: schemas
+  - name: templates
+  - name: system
