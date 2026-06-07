@@ -6,21 +6,28 @@
   "description": "Gridz — an open framework for cryptographically-attested social graphs for humans, AI agents, and organizations.",
   "license": "MIT",
   "packageManager": "pnpm@10.13.1",
-  "engines": { "node": ">=20" },
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
     "build": "turbo run build",
     "test": "turbo run test",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
     "check": "turbo run lint typecheck test build",
-    "check:nomock": "node scripts/check-no-mock-data.ts"
+    "check:nomock": "node scripts/check-no-mock-data.ts",
+    "bootstrap": "node scripts/bootstrap.mjs",
+    "register:schema": "node scripts/register-cell-schema.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.11",
+    "@ethereum-attestation-service/eas-sdk": "^2.9.1",
     "turbo": "^2.3.3",
     "typescript": "^5.7.2"
   },
   "pnpm": {
-    "onlyBuiltDependencies": ["esbuild"]
+    "onlyBuiltDependencies": [
+      "esbuild"
+    ]
   }
 }
