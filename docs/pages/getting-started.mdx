@@ -1,0 +1,40 @@
+# Getting started
+
+## 1. Bootstrap a Grid
+
+```bash
+npx gridz init --template minimal     # writes gridz.yaml (shape only — no data)
+# fill in your alias/description/url, then:
+npx gridz grid validate               # fails until every field is filled
+```
+
+Templates ship **shape, not content** — every value starts as `null` and
+`gridz grid validate` fails until you fill it. Gridz never invents data for you.
+
+## 2. Bring a signer
+
+```bash
+gridz identity import --from keystore ./keystore.json
+# or a passkey:   gridz identity import --from webauthn
+# or an HSM:      gridz identity import --from oneclaw --agent <agentId>
+```
+
+## 3. Build, publish, verify
+
+```bash
+gridz grid build -o grid.json         # signs every cell + the root
+gridz publish --sink ens --to kevin.gridz.eth
+gridz grid verify grid.json           # ✓ all cells verified
+```
+
+## 4. Render
+
+```tsx
+import { Grid } from "@gridz/react";
+import "@gridz/react/styles.css";
+
+<Grid grid={grid} />   // verification badges included
+```
+
+Also available: `@gridz/vue`, `@gridz/svelte`, and a framework-agnostic
+`<gridz-profile>` web component.

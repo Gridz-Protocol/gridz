@@ -1,6 +1,7 @@
 {
   "name": "gridz",
   "private": true,
+  "type": "module",
   "version": "0.0.0",
   "description": "Gridz — an open framework for cryptographically-attested social graphs for humans, AI agents, and organizations.",
   "license": "MIT",
@@ -11,9 +12,11 @@
     "test": "turbo run test",
     "lint": "turbo run lint",
     "typecheck": "turbo run typecheck",
-    "check": "turbo run lint typecheck test build"
+    "check": "turbo run lint typecheck test build",
+    "check:nomock": "node scripts/check-no-mock-data.ts"
   },
   "devDependencies": {
+    "@changesets/cli": "^2.27.11",
     "turbo": "^2.3.3",
     "typescript": "^5.7.2"
   },

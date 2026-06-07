@@ -6,17 +6,22 @@ A **Grid** is a profile built from typed, signed fields ("cells"), each carrying
 
 ## Status
 
-Early development. Spec-first, tests-first.
+All 15 BRIEF §16 steps complete. ~270 tests across TypeScript, Python, and
+Foundry — all green. Spec-first, tests-first, no mock data.
 
 | Area | State |
 |---|---|
-| Specs (`specs/`) | ✅ Grid model, attestation envelope, key registry, EIP-712 types, canonicalization |
-| `@gridz/core` | ✅ types, JCS canonicalization, EIP-712, merkle, signers, universal verifier — 49 tests, 98% coverage |
-| Python `gridz` | ✅ byte-compatible mirror — 31 tests, 95% coverage; cross-runtime verified both directions |
-| `@gridz/sinks` | ✅ Sink interface + MemorySink + ENS sink (swappable backend) + round-trip harness; live ENS test gated on testnet creds |
-| `@gridz/server` | ✅ Fastify + OpenAPI 3.1, attestation-validated writes, no key custody; `specs/openapi.yaml` generated from routes (18 tests) |
-| `@gridz/sdk` + Python SDK | ✅ typed client over the API + core; integration-tested against a live server in both languages (Python SDK round-trips a Python-signed grid through the TS server) |
-| CLI, MCP, renderer, more sinks, 1claw, contracts | ⏳ per `BRIEF.md` §16 build order |
+| Specs (`specs/`) | ✅ Grid model, attestation envelope, key registry, EIP-712 types, canonicalization, OpenAPI 3.1 |
+| `@gridz/core` + Python `gridz` | ✅ JCS, EIP-712, merkle, signers, verifier — cross-runtime byte-identical signatures |
+| `@gridz/sinks` + Python `gridz_sinks` | ✅ Sink interface, Memory + ENS + SQLite (real) + Postgres/MySQL/Mongo/Redis/Neo4j/S3 (docker-gated); SNS preview |
+| `@gridz/server` | ✅ Fastify + OpenAPI 3.1, attestation-validated writes, no key custody |
+| `@gridz/sdk` + Python client | ✅ typed clients; cross-language integration (Python-signed grid round-trips the TS server) |
+| `@gridz/cli` | ✅ init/validate/build/verify/publish + bootstrap templates (shape only) |
+| `@gridz/mcp` + Python `gridz_mcp` | ✅ FastMCP servers; no server-side signing |
+| `@gridz/react` / `vue` / `svelte` / `element` | ✅ renderers with verification badges |
+| `@gridz/oneclaw` + Python `gridz_oneclaw` | ✅ optional 1claw HSM adapter |
+| `contracts/` | ✅ `GridzResolver.sol` — ENSIP-10 wildcard over EAS, 100% coverage |
+| `examples/`, `docs/` | ✅ minimal-cli, oneclaw-quickstart, next-app, scaffold-agent-grid; Vocs docs |
 
 ## Layout
 

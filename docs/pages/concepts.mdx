@@ -1,0 +1,34 @@
+# Concepts
+
+## Grid, Cell, Subject
+
+A **Grid** is `{ subject, theme, layout, cells[] }`. A **Cell** is a typed
+key-value pair with its own attestation. A **Subject** is a `human`, `agent`, or
+`organization` identified by a DID (`did:pkh`, `did:web`, `did:key`,
+`did:oneclaw`).
+
+## Attestations
+
+Every cell is signed. The attestation envelope is portable and self-describing —
+EAS (on/offchain), raw EIP-712, JWS (ed25519), or COSE (WebAuthn). The `format`
+field records provenance (including `eip712-oneclaw` for HSM signatures) but is
+never a trust assumption: verification recovers the signer regardless.
+
+## Sinks are projections
+
+ENS is the primary sink; Postgres, MySQL, SQLite, MongoDB, Redis, Neo4j, and S3
+are also supported (SNS is preview). A sink stores *where a projection landed* —
+the signed attestation remains authoritative, and any sink can be rebuilt from it.
+
+## gridz.eth subnames
+
+Users get human-readable names as **subnames of `gridz.eth`** — e.g.
+`kevin.gridz.eth`. A single `GridzResolver` deployed on `gridz.eth` answers
+ENSIP-10 wildcard `text(node, "gridz.*")` reads for every subname by pulling the
+registered EAS attestation, so a user gets a name without registering their own
+ENS name.
+
+## No custodied keys
+
+Gridz never holds a private key. Signers wrap an external capability: a local
+wallet, a WebAuthn passkey, or a 1claw HSM.
