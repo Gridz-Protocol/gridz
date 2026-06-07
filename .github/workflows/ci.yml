@@ -33,6 +33,25 @@ jobs:
           uv sync --extra dev
           uv run pytest
 
+  contracts:
+    name: Contracts (Foundry)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: foundry-rs/foundry-toolchain@v1
+      - name: Install forge-std
+        working-directory: contracts
+        run: forge install foundry-rs/forge-std --no-git
+      - name: Test + coverage
+        working-directory: contracts
+        run: |
+          forge test -vvv
+          forge coverage --report summary
+      - name: Slither
+        uses: crytic/slither-action@v0
+        with:
+          target: contracts/src
+
   cross-runtime:
     name: Cross-runtime fixtures (TS ↔ Python)
     runs-on: ubuntu-latest
