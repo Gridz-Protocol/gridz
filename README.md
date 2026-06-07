@@ -23,14 +23,32 @@ Foundry — all green. Spec-first, tests-first, no mock data.
 | `contracts/` | ✅ `GridzResolver.sol` — ENSIP-10 wildcard over EAS, 100% coverage |
 | `examples/`, `docs/` | ✅ minimal-cli, oneclaw-quickstart, next-app, scaffold-agent-grid; Vocs docs |
 
-## Layout
+## Repository structure
 
+This is the **superproject**. The component repos are git submodules under the
+[Gridz-Protocol](https://github.com/Gridz-Protocol) org:
+
+| Path (submodule) | Repo | Contents |
+|---|---|---|
+| `packages/` | [gridz-js](https://github.com/Gridz-Protocol/gridz-js) | `@gridz/*` TypeScript packages |
+| `python/` | [gridz-py](https://github.com/Gridz-Protocol/gridz-py) | Python packages |
+| `contracts/` | [gridz-contracts](https://github.com/Gridz-Protocol/gridz-contracts) | Foundry resolver (forge-std is itself a submodule) |
+| `docs/` | [gridz-docs](https://github.com/Gridz-Protocol/gridz-docs) | Vocs site |
+| `examples/` | [gridz-examples](https://github.com/Gridz-Protocol/gridz-examples) | example apps |
+
+The superproject keeps the shared sources: `specs/` (the source of truth),
+`tests/cross-runtime/`, `templates/`, root config, and governance. Develop here —
+the packages share the superproject's specs, fixtures, and base tsconfig.
+
+```bash
+git clone --recurse-submodules https://github.com/Gridz-Protocol/gridz.git
+cd gridz
+pnpm install
+pnpm -w run check        # lint + typecheck + test + build across all packages
+pnpm -w run check:nomock # no-mock-data guard
 ```
-specs/        canonical JSON Schemas + EIP-712 types + canonicalization (source of truth)
-packages/     TypeScript monorepo (@gridz/*)
-  core-ts/    @gridz/core — the crypto core everything else builds on
-DESIGN_NOTES.md   judgment calls, brief corrections, open questions
-```
+
+Already cloned without submodules? `git submodule update --init --recursive`.
 
 ## Develop
 

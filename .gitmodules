@@ -1,0 +1,15 @@
+[submodule "packages"]
+	path = packages
+	url = https://github.com/Gridz-Protocol/gridz-js.git
+[submodule "python"]
+	path = python
+	url = https://github.com/Gridz-Protocol/gridz-py.git
+[submodule "contracts"]
+	path = contracts
+	url = https://github.com/Gridz-Protocol/gridz-contracts.git
+[submodule "docs"]
+	path = docs
+	url = https://github.com/Gridz-Protocol/gridz-docs.git
+[submodule "examples"]
+	path = examples
+	url = https://github.com/Gridz-Protocol/gridz-examples.git
