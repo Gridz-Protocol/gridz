@@ -1,0 +1,72 @@
+{
+  "schema_version": "gridz/1.0.0",
+  "subject": {
+    "type": "agent",
+    "did": "did:key:z6Mkv48a8DBwH6EPm4oUDKsAMt24Uj246AjLkh2nVyhmUfT3"
+  },
+  "theme": {
+    "background_type": "solid",
+    "background_value": "#0b0b0f",
+    "accent_color": "#7c5cff",
+    "text_color": "#f4f4f5",
+    "card_style": "rounded",
+    "card_background": "#16161c",
+    "font_family": "sans",
+    "show_gridz_badge": true
+  },
+  "cells": [
+    {
+      "id": "a1",
+      "key": "agent-context",
+      "value": "example agent context",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 1
+      },
+      "size": "1x1",
+      "is_visible": true,
+      "attestation": {
+        "attester": "did:key:z6Mkv48a8DBwH6EPm4oUDKsAMt24Uj246AjLkh2nVyhmUfT3",
+        "iat": "2026-01-01T00:00:00.000Z",
+        "value_hash": "0x6f0f9a3a2538fb5b06f70253af894fd5092152bc01253474b8df805b9c46117c",
+        "format": "jws-ed25519",
+        "uid": "0xd7690f9e4d0e8c24089be8fc43b4a523ac3cb7d25ebf37f8685824a56ce90e6d",
+        "uri": "data://inline/0xd7690f9e4d0e8c24089be8fc43b4a523ac3cb7d25ebf37f8685824a56ce90e6d",
+        "payload": "eyJraW5kIjoiandzIiwiandzIjoiZXlKaGJHY2lPaUpGWkVSVFFTSXNJblI1Y0NJNklrcFhWQ0lzSW10cFpDSTZJbVJwWkRwclpYazZlalpOYTNZME9HRTRSRUozU0RaRlVHMDBiMVZFUzNOQlRYUXlORlZxTWpRMlFXcE1hMmd5YmxaNWFHMVZabFF6SW4wLmV5SnBjM01pT2lKa2FXUTZhMlY1T25vMlRXdDJORGhoT0VSQ2QwZzJSVkJ0Tkc5VlJFdHpRVTEwTWpSVmFqSTBOa0ZxVEd0b01tNVdlV2h0VldaVU15SXNJbWR5YVdSSlpDSTZJakI0TkRNNVkyUmxZVE5tTVRrelpHRTNOV05tWXpSaVlURTFaalF6TldWaU5qWmpORFE1TnpWak1qWTNaV0k1TURBek9UYzRObVEyWkRFeVlqQmxZMk0wTnlJc0ltdGxlU0k2SW1GblpXNTBMV052Ym5SbGVIUWlMQ0oyWVd4MVpVaGhjMmhJWlhnaU9pSXdlRFptTUdZNVlUTmhNalV6T0daaU5XSXdObVkzTURJMU0yRm1PRGswWm1RMU1Ea3lNVFV5WW1Nd01USTFNelEzTkdJNFpHWTRNRFZpT1dNME5qRXhOMk1pTENKM2FXUm5aWFJVZVhCbFNHRnphQ0k2SWpCNFpUTmlNR00wTkRJNU9HWmpNV014TkRsaFptSm1OR000T1RrMlptSTVNalF5TjJGbE5ERmxORFkwT1dJNU16UmpZVFE1TlRrNU1XSTNPRFV5WWpnMU5TSXNJbVY0Y0dseVpYTkJkQ0k2TUN3aWJtOXVZMlVpT2lJd0lpd2lhV0YwSWpveE56WTNNakkxTmpBd2ZRLjc1Ykh5c2h5dWZEZkNsUWVpV2ZDN193WXR3M3hIWmxvUGdkamJLa3ZRY1psVVo1Q2N3V08tWDgxWmMxeEwzY3dYUENmVlc0bjdJTXo0RnQ1UjFfeEJBIn0"
+      }
+    },
+    {
+      "id": "a2",
+      "key": "agent-endpoint[mcp]",
+      "value": "https://gridz.dev/mcp",
+      "position": {
+        "x": 0,
+        "y": 0,
+        "w": 1,
+        "h": 1
+      },
+      "size": "1x1",
+      "is_visible": true,
+      "attestation": {
+        "attester": "did:key:z6Mkv48a8DBwH6EPm4oUDKsAMt24Uj246AjLkh2nVyhmUfT3",
+        "iat": "2026-01-01T00:00:00.000Z",
+        "value_hash": "0x74d260a3d8322ae2c958dc7d84ce460acbca4383bc56dfbdafb71bed06e81655",
+        "format": "jws-ed25519",
+        "uid": "0xc1458ee18e4f3a7373f50c8d183d5db6442f4b392cc311a2147d73beee8f563c",
+        "uri": "data://inline/0xc1458ee18e4f3a7373f50c8d183d5db6442f4b392cc311a2147d73beee8f563c",
+        "payload": "eyJraW5kIjoiandzIiwiandzIjoiZXlKaGJHY2lPaUpGWkVSVFFTSXNJblI1Y0NJNklrcFhWQ0lzSW10cFpDSTZJbVJwWkRwclpYazZlalpOYTNZME9HRTRSRUozU0RaRlVHMDBiMVZFUzNOQlRYUXlORlZxTWpRMlFXcE1hMmd5YmxaNWFHMVZabFF6SW4wLmV5SnBjM01pT2lKa2FXUTZhMlY1T25vMlRXdDJORGhoT0VSQ2QwZzJSVkJ0Tkc5VlJFdHpRVTEwTWpSVmFqSTBOa0ZxVEd0b01tNVdlV2h0VldaVU15SXNJbWR5YVdSSlpDSTZJakI0TkRNNVkyUmxZVE5tTVRrelpHRTNOV05tWXpSaVlURTFaalF6TldWaU5qWmpORFE1TnpWak1qWTNaV0k1TURBek9UYzRObVEyWkRFeVlqQmxZMk0wTnlJc0ltdGxlU0k2SW1GblpXNTBMV1Z1WkhCdmFXNTBXMjFqY0YwaUxDSjJZV3gxWlVoaGMyaElaWGdpT2lJd2VEYzBaREkyTUdFelpEZ3pNakpoWlRKak9UVTRaR00zWkRnMFkyVTBOakJoWTJKallUUXpPRE5pWXpVMlpHWmlaR0ZtWWpjeFltVmtNRFpsT0RFMk5UVWlMQ0ozYVdSblpYUlVlWEJsU0dGemFDSTZJakI0WlROaU1HTTBOREk1T0daak1XTXhORGxoWm1KbU5HTTRPVGsyWm1JNU1qUXlOMkZsTkRGbE5EWTBPV0k1TXpSallUUTVOVGs1TVdJM09EVXlZamcxTlNJc0ltVjRjR2x5WlhOQmRDSTZNQ3dpYm05dVkyVWlPaUl3SWl3aWFXRjBJam94TnpZM01qSTFOakF3ZlEuMThxbE90b0NmcUhyeEo4RDYxejBKX2ZNRG14UTAyRUc2MUtjbEdNblNkX2xFWndCaGcwOXFuaGpubzlsVFliRm9STWpwSmRDZWtEbXBUanljYXJJQWcifQ"
+      }
+    }
+  ],
+  "root_attestation": {
+    "attester": "did:key:z6Mkv48a8DBwH6EPm4oUDKsAMt24Uj246AjLkh2nVyhmUfT3",
+    "iat": "2026-01-01T00:00:00.000Z",
+    "value_hash": "0xf403ce592f3f41207a8789411fee428251dbb9bcf51d156feff0f1928a2b90ca",
+    "format": "jws-ed25519",
+    "uid": "0x5ad851e6437fcf83bb9b73c548e1948e8dc456dc60976c77e4af8d088898c97c",
+    "uri": "data://inline/0x5ad851e6437fcf83bb9b73c548e1948e8dc456dc60976c77e4af8d088898c97c",
+    "payload": "eyJraW5kIjoiandzIiwiandzIjoiZXlKaGJHY2lPaUpGWkVSVFFTSXNJblI1Y0NJNklrcFhWQ0lzSW10cFpDSTZJbVJwWkRwclpYazZlalpOYTNZME9HRTRSRUozU0RaRlVHMDBiMVZFUzNOQlRYUXlORlZxTWpRMlFXcE1hMmd5YmxaNWFHMVZabFF6SW4wLmV5SnBjM01pT2lKa2FXUTZhMlY1T25vMlRXdDJORGhoT0VSQ2QwZzJSVkJ0Tkc5VlJFdHpRVTEwTWpSVmFqSTBOa0ZxVEd0b01tNVdlV2h0VldaVU15SXNJbWR5YVdSSlpDSTZJakI0TkRNNVkyUmxZVE5tTVRrelpHRTNOV05tWXpSaVlURTFaalF6TldWaU5qWmpORFE1TnpWak1qWTNaV0k1TURBek9UYzRObVEyWkRFeVlqQmxZMk0wTnlJc0ltMWxjbXRzWlZKdmIzUWlPaUl3ZUdZME1ETmpaVFU1TW1ZelpqUXhNakEzWVRnM09EazBNVEZtWldVME1qZ3lOVEZrWW1JNVltTm1OVEZrTVRVMlptVm1aakJtTVRreU9HRXlZamt3WTJFaUxDSnpZMmhsYldGV1pYSnphVzl1SWpvaVozSnBaSG92TVM0d0xqQWlMQ0pqWld4c1EyOTFiblFpT2pJc0ltbGhkQ0k2TVRjMk56SXlOVFl3TUgwLnZZWDdGNk1nOFRIMUhaWkxENXR6Y1V3RUN0eW8xQkJBY0UzbnFja1ZaUThoOWZVRjU5WFFwX1Jld1hXbVVabUtmUWNFOHJacDBxaGdnS0JYUFZhUEFBIn0"
+  }
+}

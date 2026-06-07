@@ -10,3 +10,8 @@ coverage/
 .DS_Store
 __pycache__/
 .venv/
+.pytest_cache/
+.hypothesis/
+.coverage
+*.egg-info/
+.ruff_cache/

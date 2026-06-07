@@ -1,0 +1,32 @@
+[project]
+name = "gridz"
+version = "0.1.0"
+description = "Gridz core (Python) — JCS canonicalization, EIP-712, merkle, signers, and the universal verifier. Cross-runtime compatible with @gridz/core."
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+dependencies = [
+    "rfc8785>=0.1.4",
+    "pycryptodome>=3.21",
+    "eth-account>=0.13.4",
+    "base58>=2.1.1",
+    "cryptography>=44.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.3.4",
+    "pytest-cov>=6.0.0",
+    "hypothesis>=6.123.0",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/gridz"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=gridz --cov-report=term-missing --cov-fail-under=90"

@@ -11,8 +11,8 @@ Early development. Spec-first, tests-first.
 | Area | State |
 |---|---|
 | Specs (`specs/`) | ✅ Grid model, attestation envelope, key registry, EIP-712 types, canonicalization |
-| `@gridz/core` | ✅ types, JCS canonicalization, EIP-712, merkle, signers, universal verifier — 45 tests, 98% coverage |
-| Python `gridz` | ⏳ next: cross-runtime mirror |
+| `@gridz/core` | ✅ types, JCS canonicalization, EIP-712, merkle, signers, universal verifier — 49 tests, 98% coverage |
+| Python `gridz` | ✅ byte-compatible mirror — 31 tests, 95% coverage; cross-runtime verified both directions |
 | Sinks, server, SDK, CLI, MCP, renderer, 1claw, contracts | ⏳ per `BRIEF.md` §16 build order |
 
 ## Layout

@@ -1,0 +1,57 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  typescript:
+    name: TypeScript (lint, typecheck, test, build)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.13.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm -w run check
+
+  python:
+    name: Python (pytest + coverage)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+      - name: gridz core
+        working-directory: python/gridz
+        run: |
+          uv sync --extra dev
+          uv run pytest
+
+  cross-runtime:
+    name: Cross-runtime fixtures (TS ↔ Python)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10.13.1
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: pnpm
+      - uses: astral-sh/setup-uv@v5
+      - run: pnpm install --frozen-lockfile
+      - run: pnpm --filter @gridz/core build
+      # TS verifies Python-signed fixtures; Python verifies TS-signed fixtures.
+      - run: pnpm --filter @gridz/core test
+      - name: Python lane
+        working-directory: python/gridz
+        run: |
+          uv sync --extra dev
+          uv run pytest tests/test_crossruntime.py
