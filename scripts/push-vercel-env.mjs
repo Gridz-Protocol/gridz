@@ -21,6 +21,10 @@ const VARS = [
   ["CELL_SCHEMA", "production"],
   ["DEPLOYER_PRIVATE_KEY", "production"],
   ["NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID", "production"],
+  ["PINATA_JWT", "production"],
+  ["PINATA_API_KEY", "production"],
+  ["PINATA_API_SECRET", "production"],
+  ["PINATA_GATEWAY", "production"],
 ];
 
 function add(name, value, env) {
