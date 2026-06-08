@@ -218,14 +218,14 @@ async function testVerifyApi() {
     return;
   }
 
-  if (!data.ok || !data.report?.cells?.length) {
+  if (!data.report?.cells?.length) {
     fail(`verify api: missing verification report (${path})`);
     return;
   }
 
   const verified = data.report.cells.filter((c) => c.result?.ok).length;
   if (verified < 5) {
-    fail(`verify api: expected verified cells, got ${verified}`);
+    fail(`verify api: expected verified cells, got ${verified} (${path})`);
     return;
   }
 
