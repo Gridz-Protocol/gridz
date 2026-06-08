@@ -1,0 +1,189 @@
+---
+description: Gridz monorepo architecture, deployments, env sync, docs, and ship checklist — always follow when changing this repo.
+alwaysApply: true
+---
+
+# Gridz monorepo — source of truth & sync playbook
+
+## What this is
+
+Open framework for **cryptographically-attested profiles** (Grid = signed cells + root). Production app: **gridz.bio** (`examples/next-app`). Identity subjects stay `*.gridz.eth`; public URLs `*.gridz.bio`.
+
+**Production chain: Base mainnet (`8453`)** — not Ethereum L1. Canonical addresses: `specs/deployments.md` (update there first, then mirror below).
+
+| Item | Base production value |
+|------|----------------------|
+| GridzResolver proxy | `0x73c5e3944B780D4927c403d351A4F94875DC57B3` |
+| EAS | `0x4200000000000000000000000000000000000021` |
+| SchemaRegistry | `0x4200000000000000000000000000000000000020` |
+| cell schema UID | `0x394d8e67b1470cbdb7fa6c7d15d15d295ca81d822b55267939751a8a686abb87` |
+| Registrar | `0xEBE4ceb499Ad95DC1e5662E3a223Ec8cc0a555d9` |
+| RPC | `https://base.publicnode.com` |
+| EAS explorer | `https://base.easscan.org` |
+
+Legacy L1 resolver `0x190a9c0D29bCca03efeA85dcDF8F4b283e32dc52` — do not point gridz.bio at it.
+
+## Repo layout (git submodules)
+
+| Path | Remote | Contents |
+|------|--------|----------|
+| `packages/` | gridz-js | `@gridz/core`, `sinks`, `cli`, `mcp`, `react`, etc. |
+| `python/` | gridz-py | `gridz`, `gridz_mcp`, `gridz_sinks`, `gridz_oneclaw` |
+| `contracts/` | gridz-contracts | `GridzResolver.sol`, Foundry tests, deploy/upgrade scripts |
+| `examples/` | gridz-examples | **gridz.bio** (`next-app`), minimal-cli, oneclaw-quickstart |
+| `specs/` | superproject | Schemas, EIP-712 types, **deployments.md** — spec-first |
+| `scripts/` | superproject | bootstrap, env push, schema register, demo verify |
+
+**Commit order:** submodule (`contracts/`, `examples/`, `packages/`, `python/`) → push submodule → bump pointer in superproject `gridz` → push superproject.
+
+## Architecture (gridz.bio)
+
+### Read path
+`app/[subject]/page.tsx` → `loadGrid()` → Base RPC + `GRIDZ_RESOLVER` direct `text()` / `cellAttestation()` (`lib/loadGridResolver.ts`). No wallet required.
+
+### Publish path (current production)
+1. User signs EIP-712 in browser (`ProfileEditor` → `buildProfileGrid`)
+2. `POST /api/publish` with signed grid (`app/api/publish/route.ts`)
+3. Server registrar wallet: EAS `attest` + `setCellAttestation` per changed cell (`lib/publishEas.ts`, `mode: "registrar"`)
+4. User does **not** pay gas; registrar must hold Base ETH
+
+Alternative `mode: "owner"` (user-paid) exists in `publishEas.ts` but editor uses API path.
+
+### Edit / claim permissions
+`lib/canEditProfile.ts` + `ProfilePage.tsx`:
+- No on-chain grid → anyone can claim
+- Local draft in browser → can edit
+- Registrar-only on-chain cells (`isRegistrarOnlyPublish`) → reclaimable
+- Else → wallet must match cell attester (`isProfileOwner`)
+
+`NEXT_PUBLIC_REGISTRAR_ADDRESS` must match registrar for incomplete-claim detection.
+
+### Demo profile
+`demo.gridz.eth` — Elon Musk widget showcase (`scripts/__fixtures__/demoProfile.ts`). Refresh: `pnpm demo:publish` (needs `GRIDZ_SIGNER_KEY` + registrar key). Verify: `pnpm demo:verify`.
+
+## Env vars (root `.env` → Vercel)
+
+| Var | Purpose |
+|-----|---------|
+| `GRIDZ_CHAIN_ID` | `8453` |
+| `GRIDZ_RPC_URL` | Base RPC |
+| `GRIDZ_RESOLVER` | Resolver proxy (server) |
+| `EAS_ADDRESS` / `CELL_SCHEMA` | Server publish |
+| `REGISTRAR_PRIVATE_KEY` or `DEPLOYER_PRIVATE_KEY` | `/api/publish` signer |
+| `GRIDZ_SIGNER_KEY` | Demo profile signer only |
+| `ONECLAW_CHAIN_ID` | Must match `GRIDZ_CHAIN_ID` (`8453`) |
+| `NEXT_PUBLIC_*` | Client: resolver, chain, RPC, registrar address, WC project id |
+
+**Sync local → next-app:** `pnpm bootstrap` (writes `examples/next-app/.env.local`).
+
+**Sync local → Vercel:** `set -a && source .env && set +a && node scripts/push-vercel-env.mjs`
+
+Never commit `.env` or keys. `push-vercel-env.mjs` derives `REGISTRAR_PRIVATE_KEY` from `DEPLOYER_PRIVATE_KEY` if unset and sets `NEXT_PUBLIC_REGISTRAR_ADDRESS`.
+
+## Chain helpers (add new networks here)
+
+- `scripts/lib/constants.mjs` — `NETWORKS` (mainnet, sepolia, **base**)
+- `scripts/lib/gridzChain.mjs` — viem chain for scripts
+- `examples/next-app/lib/gridzChain.ts` — wagmi + app
+- `examples/next-app/lib/gridzDeployments.ts` — doc/UI constants (env overrides with Base defaults)
+- `examples/next-app/lib/wagmiConfig.ts` — single active chain from `NEXT_PUBLIC_GRIDZ_CHAIN_ID`
+
+Pattern: `chainId === 11155111 ? sepolia : chainId === 8453 ? base : mainnet` — never hardcode mainnet-only.
+
+## Sync matrix — when you change X, update Y and run Z
+
+### Contract / chain / addresses
+Update **all** of:
+1. `specs/deployments.md` (canonical)
+2. `examples/next-app/lib/gridzDeployments.ts`
+3. `contracts/README.md`
+4. `examples/next-app/app/docs/toolkit/page.tsx`, `app/docs/api/page.tsx`
+5. `examples/next-app/app/for-ai/page.tsx`
+6. `examples/next-app/lib/forAiContent.ts` (`buildLlmsTxt`, `buildSkillMd`) — **escape backticks** inside template literals as `\``
+7. `scripts/lib/constants.mjs` if network preset changes
+8. Root `.env` → `pnpm bootstrap` → `node scripts/push-vercel-env.mjs`
+9. On new chain: `node scripts/register-cell-schema.mjs` before first attest
+10. Deploy/upgrade: `contracts/script/Deploy.s.sol` or `Upgrade.s.sol` with `PROXY_ADDRESS`
+
+Run: `cd contracts && forge test` · `pnpm demo:publish` · `pnpm demo:verify`
+
+### Publish flow (editor / API / gas model)
+Update:
+- `examples/next-app/components/ProfileEditor.tsx` (API vs client `publishEas`)
+- `examples/next-app/app/api/publish/route.ts`
+- `examples/next-app/components/PublishProgress.tsx` + `.test.tsx`
+- `examples/next-app/lib/publishEstimate.ts` + `.test.ts`
+- Docs: `app/docs/api/page.tsx`, `claim/page.tsx`, `using-gridz/page.tsx`
+- `lib/forAiContent.ts` guardrails + publish workflow
+
+Run: `pnpm --filter gridz-next-app test && pnpm --filter gridz-next-app build`
+
+### Profile permissions / claim UI
+Update: `lib/canEditProfile.ts` + `.test.ts`, `components/ProfilePage.tsx`
+
+### Packages (`@gridz/*` or `gridz` Python)
+- TS: `packages/` submodule — commit & push gridz-js, bump superproject
+- Py: `python/gridz` — `python3 -m venv .venv && pip install -e ".[dev]" && pytest`
+- Cross-runtime: `tests/cross-runtime/`
+
+### Docs / agents
+Human docs: `examples/next-app/app/docs/**`
+Machine: `lib/forAiContent.ts` → `/llms.txt`, `/skill.md`, `/for-ai` (cached routes)
+After forAiContent edits: build next-app (template literal syntax breaks easily)
+
+## Commands to run after substantive changes
+
+```bash
+# Fast path (gridz.bio only)
+pnpm --filter gridz-next-app test
+pnpm --filter gridz-next-app build
+
+# Contracts
+cd contracts && forge test
+
+# Python core
+cd python/gridz && .venv/bin/pytest -q   # create .venv if missing
+
+# Full monorepo (slow)
+pnpm check
+pnpm check:nomock   # no invented demo data outside __fixtures__
+
+# Demo on-chain smoke
+pnpm demo:publish && pnpm demo:verify
+```
+
+## Ship to production checklist
+
+1. Tests + build green (above)
+2. Commit **examples** → push `gridz-examples`
+3. If contracts changed: commit **contracts** → push `gridz-contracts`
+4. Commit **gridz** superproject (submodule pointers + `specs/`, `scripts/`)
+5. `source .env && node scripts/push-vercel-env.mjs`
+6. `vercel --prod` from repo root (aliases `gridz.bio`)
+7. Smoke: `curl https://gridz.bio/api/profile/demo.gridz.eth` → `ok: true`, 20 cells
+
+Only commit when user asks. Never force-push main. Never commit secrets.
+
+## Key files quick reference
+
+| Concern | Path |
+|---------|------|
+| Profile page + toolbar | `examples/next-app/components/ProfilePage.tsx` |
+| Editor + publish UX | `examples/next-app/components/ProfileEditor.tsx` |
+| Server publish | `examples/next-app/app/api/publish/route.ts` |
+| EAS + resolver writes | `examples/next-app/lib/publishEas.ts` |
+| On-chain read | `examples/next-app/lib/loadGrid.ts`, `loadGridResolver.ts` |
+| Wagmi / wallet chain | `examples/next-app/lib/wagmiConfig.ts`, `wallet.tsx` |
+| Resolver contract | `contracts/src/GridzResolver.sol` |
+| Network presets | `scripts/lib/constants.mjs` |
+| Vercel env push | `scripts/push-vercel-env.mjs` |
+| Agent docs source | `examples/next-app/lib/forAiContent.ts` |
+
+## Principles (do not violate)
+
+- **Spec first** — `specs/` is authoritative; SDKs follow specs
+- **No custodied user keys** on server (registrar key is protocol infra only)
+- **Sinks are projections** — signed attestation is truth
+- **No mock data** in non-test source (`pnpm check:nomock`)
+- **Minimal diffs** — match existing patterns; don't refactor unrelated code
+- **Subjects** stay `alias.gridz.eth` even on Base; don't rename to `.base.eth` without explicit product decision
