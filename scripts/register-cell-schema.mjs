@@ -7,6 +7,7 @@ import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 import { parseEnvBlock } from "./lib/constants.mjs";
+import { gridzChainForId } from "./lib/gridzChain.mjs";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const ENV_PATH = join(ROOT, ".env");
@@ -22,12 +23,11 @@ const {
   toBytes,
 } = require("viem");
 const { privateKeyToAccount } = require("viem/accounts");
-const { mainnet, sepolia } = require("viem/chains");
-
 /** @see https://github.com/ethereum-attestation-service/eas-contracts deployments */
 const SCHEMA_REGISTRY = {
   1: getAddress("0xA7b39296258348C78294F95B872b282326A97BDF"),
   11155111: getAddress("0x0a7E2Ff54e576B096E04665717A6C3B2a33b9e4a"),
+  8453: getAddress("0x4200000000000000000000000000000000000020"),
 };
 
 const CELL_SCHEMA_STRING =
@@ -89,7 +89,7 @@ async function main() {
   const registry = SCHEMA_REGISTRY[chainId];
   if (!registry) throw new Error(`No EAS SchemaRegistry for chain ${chainId}`);
 
-  const chain = chainId === 11155111 ? sepolia : mainnet;
+  const chain = gridzChainForId(chainId);
   const account = privateKeyToAccount(key);
   const transport = http(rpc);
   const publicClient = createPublicClient({ chain, transport });

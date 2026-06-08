@@ -1,4 +1,4 @@
-/** @typedef {"mainnet" | "sepolia"} Network */
+/** @typedef {"mainnet" | "sepolia" | "base"} Network */
 
 /** @type {Record<Network, { chainId: number; rpc: string; eas: `0x${string}` }>} */
 export const NETWORKS = {
@@ -11,6 +11,11 @@ export const NETWORKS = {
     chainId: 11155111,
     rpc: "https://ethereum-sepolia.publicnode.com",
     eas: "0xC2679fBD37d54388Ce493F1DB75320D236e1815e",
+  },
+  base: {
+    chainId: 8453,
+    rpc: "https://base.publicnode.com",
+    eas: "0x4200000000000000000000000000000000000021",
   },
 };
 

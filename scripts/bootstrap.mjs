@@ -27,7 +27,7 @@ function usage() {
   pnpm bootstrap [options]
 
 Options:
-  --network <name>   mainnet (default) or sepolia — fills RPC/EAS defaults only when unset in .env
+  --network <name>   mainnet (default), base, or sepolia — fills RPC/EAS defaults when unset in .env
   --deploy           Deploy GridzResolver via Foundry
   --ens              Set gridz.eth resolver to GridzResolver
   --vercel           Deploy examples/next-app to Vercel
