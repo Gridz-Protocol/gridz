@@ -5,7 +5,7 @@ export const NETWORKS = {
   mainnet: {
     chainId: 1,
     rpc: "https://ethereum.publicnode.com",
-    eas: "0xC03e4De6924389f6Dfc89A41Eda71C41cd063315",
+    eas: "0xA1207F3BBa224E2c9c3c6D5aF63D0eb1582Ce587",
   },
   sepolia: {
     chainId: 11155111,
@@ -84,6 +84,7 @@ export function buildEnvFiles(env) {
     `NEXT_PUBLIC_GRIDZ_RPC_URL=${env.GRIDZ_RPC_URL}`,
     `NEXT_PUBLIC_SITE_URL=${siteUrl}`,
     `NEXT_PUBLIC_SITE_DOMAIN=${env.NEXT_PUBLIC_SITE_DOMAIN ?? "gridz.bio"}`,
+    `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=${env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? ""}`,
     `GRIDZ_PG_DSN=${env.GRIDZ_PG_DSN ?? ""}`,
     `EAS_ADDRESS=${env.EAS_ADDRESS ?? ""}`,
     `CELL_SCHEMA=${env.CELL_SCHEMA ?? ""}`,

@@ -19,6 +19,8 @@ const VARS = [
   ["NEXT_PUBLIC_SITE_DOMAIN", "production"],
   ["EAS_ADDRESS", "production"],
   ["CELL_SCHEMA", "production"],
+  ["DEPLOYER_PRIVATE_KEY", "production"],
+  ["NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID", "production"],
 ];
 
 function add(name, value, env) {

@@ -65,9 +65,7 @@ const registryAbi = [
 ];
 
 function schemaUid(schema, resolver, revocable) {
-  return keccak256(
-    encodePacked(["bytes32", "address", "bool"], [keccak256(toBytes(schema)), resolver, revocable]),
-  );
+  return keccak256(encodePacked(["string", "address", "bool"], [schema, resolver, revocable]));
 }
 
 function upsertEnv(key, value) {
