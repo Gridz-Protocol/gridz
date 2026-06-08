@@ -24,6 +24,7 @@ const VARS = [
   ["PINATA_JWT", "production"],
   ["PINATA_API_KEY", "production"],
   ["PINATA_API_SECRET", "production"],
+  ["PINATA_GATEWAY_URL", "production"],
   ["PINATA_GATEWAY", "production"],
 ];
 
