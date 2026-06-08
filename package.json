@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "version": "0.0.0",
-  "description": "Gridz — an open framework for cryptographically-attested social graphs for humans, AI agents, and organizations.",
+  "description": "Gridz \u2014 an open framework for cryptographically-attested social graphs for humans, AI agents, and organizations.",
   "license": "MIT",
   "packageManager": "pnpm@10.13.1",
   "engines": {
@@ -17,7 +17,9 @@
     "check": "turbo run lint typecheck test build",
     "check:nomock": "node scripts/check-no-mock-data.ts",
     "bootstrap": "node scripts/bootstrap.mjs",
-    "register:schema": "node scripts/register-cell-schema.mjs"
+    "register:schema": "node scripts/register-cell-schema.mjs",
+    "demo:publish": "pnpm --filter gridz-next-app publish-demo",
+    "demo:verify": "node scripts/verify-demo-profile.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.11",

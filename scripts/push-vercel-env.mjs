@@ -20,6 +20,9 @@ const VARS = [
   ["EAS_ADDRESS", "production"],
   ["CELL_SCHEMA", "production"],
   ["DEPLOYER_PRIVATE_KEY", "production"],
+  ["NEXT_PUBLIC_DEMO_PROFILE_SUBJECT", "production"],
+  ["GRIDZ_SIGNER_KEY", "production"],
+  ["REGISTRAR_PRIVATE_KEY", "production"],
   ["NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID", "production"],
   ["PINATA_JWT", "production"],
   ["PINATA_API_KEY", "production"],
@@ -54,6 +57,7 @@ const values = {
     process.env.NEXT_PUBLIC_GRIDZ_RPC_URL ?? process.env.GRIDZ_RPC_URL ?? "",
   NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL ?? "https://gridz.bio",
   NEXT_PUBLIC_SITE_DOMAIN: process.env.NEXT_PUBLIC_SITE_DOMAIN ?? "gridz.bio",
+  NEXT_PUBLIC_DEMO_PROFILE_SUBJECT: process.env.NEXT_PUBLIC_DEMO_PROFILE_SUBJECT ?? "demo.gridz.eth",
 };
 
 for (const [key, target] of VARS) {

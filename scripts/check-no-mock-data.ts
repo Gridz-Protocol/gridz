@@ -18,7 +18,7 @@ const SCAN_DIRS = [
 ];
 
 const SOURCE_EXT = /\.(ts|tsx|js|jsx|py|svelte|sol|md|yaml|yml|json)$/;
-const EXEMPT = /(\/test\/|\/tests\/|__fixtures__|\/dist\/|\/node_modules\/|\/\.venv\/|check-no-mock-data)/;
+const EXEMPT = /(\/test\/|\/tests\/|__fixtures__|\/dist\/|\/\.next\/|\/node_modules\/|\/\.venv\/|check-no-mock-data)/;
 
 // Patterns that indicate fabricated demo data. Deliberately specific to avoid
 // false positives on ordinary words.
