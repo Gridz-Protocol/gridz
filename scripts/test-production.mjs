@@ -75,6 +75,7 @@ async function testStaticPages() {
     "/docs/spec/keys",
     "/docs/spec/canonicalization",
     "/docs/spec/attestations",
+    "/docs/spec/sinks",
     "/docs/spec/on-chain",
     "/docs/toolkit",
     "/docs/using-gridz",
