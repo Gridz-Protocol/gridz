@@ -19,7 +19,8 @@
     "bootstrap": "node scripts/bootstrap.mjs",
     "register:schema": "node scripts/register-cell-schema.mjs",
     "demo:publish": "pnpm --filter gridz-next-app publish-demo",
-    "demo:verify": "node scripts/verify-demo-profile.mjs"
+    "demo:verify": "node scripts/verify-demo-profile.mjs",
+    "test:production": "node scripts/test-production.mjs"
   },
   "devDependencies": {
     "@changesets/cli": "^2.27.11",
