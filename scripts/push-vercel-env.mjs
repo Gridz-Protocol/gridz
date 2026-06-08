@@ -12,6 +12,13 @@ const VARS = [
   ["GRIDZ_CHAIN_ID", "production"],
   ["GRIDZ_ENS_BASE", "production"],
   ["NEXT_PUBLIC_GRIDZ_ENS_BASE", "production"],
+  ["NEXT_PUBLIC_GRIDZ_RESOLVER", "production"],
+  ["NEXT_PUBLIC_GRIDZ_CHAIN_ID", "production"],
+  ["NEXT_PUBLIC_GRIDZ_RPC_URL", "production"],
+  ["NEXT_PUBLIC_SITE_URL", "production"],
+  ["NEXT_PUBLIC_SITE_DOMAIN", "production"],
+  ["EAS_ADDRESS", "production"],
+  ["CELL_SCHEMA", "production"],
 ];
 
 function add(name, value, env) {
@@ -32,6 +39,14 @@ const values = {
   ...process.env,
   NEXT_PUBLIC_GRIDZ_ENS_BASE:
     process.env.NEXT_PUBLIC_GRIDZ_ENS_BASE ?? process.env.GRIDZ_ENS_BASE ?? "gridz.eth",
+  NEXT_PUBLIC_GRIDZ_RESOLVER:
+    process.env.NEXT_PUBLIC_GRIDZ_RESOLVER ?? process.env.GRIDZ_RESOLVER ?? "",
+  NEXT_PUBLIC_GRIDZ_CHAIN_ID:
+    process.env.NEXT_PUBLIC_GRIDZ_CHAIN_ID ?? process.env.GRIDZ_CHAIN_ID ?? "1",
+  NEXT_PUBLIC_GRIDZ_RPC_URL:
+    process.env.NEXT_PUBLIC_GRIDZ_RPC_URL ?? process.env.GRIDZ_RPC_URL ?? "",
+  NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL ?? "https://gridz.bio",
+  NEXT_PUBLIC_SITE_DOMAIN: process.env.NEXT_PUBLIC_SITE_DOMAIN ?? "gridz.bio",
 };
 
 for (const [key, target] of VARS) {
