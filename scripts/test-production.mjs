@@ -202,6 +202,36 @@ async function testPublishApi() {
   pass("/api/publish rejects empty body with 400");
 }
 
+async function testVerifyApi() {
+  const path = `/api/verify/${encodeURIComponent(DEMO_SUBJECT)}`;
+  const { res, text } = await fetchText(path);
+  if (res.status !== 200) {
+    fail(`verify api: expected 200, got ${res.status}`);
+    return;
+  }
+
+  let data;
+  try {
+    data = JSON.parse(text);
+  } catch {
+    fail("verify api: response is not JSON");
+    return;
+  }
+
+  if (!data.ok || !data.report?.cells?.length) {
+    fail(`verify api: missing verification report (${path})`);
+    return;
+  }
+
+  const verified = data.report.cells.filter((c) => c.result?.ok).length;
+  if (verified < 5) {
+    fail(`verify api: expected verified cells, got ${verified}`);
+    return;
+  }
+
+  pass(`verify api — ${verified}/${data.report.cells.length} cells verified at ${DEMO_SUBJECT}`);
+}
+
 async function testDemoProfile() {
   const path = `/api/profile/${encodeURIComponent(DEMO_SUBJECT)}`;
   const { res, text } = await fetchText(path);
@@ -249,6 +279,7 @@ async function main() {
   await testSubdomainRewrites();
   await testProfileApi();
   await testPublishApi();
+  await testVerifyApi();
   await testDemoProfile();
 
   console.log("");
