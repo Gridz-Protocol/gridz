@@ -19,6 +19,8 @@ const VARS = [
   ["NEXT_PUBLIC_SITE_DOMAIN", "production"],
   ["EAS_ADDRESS", "production"],
   ["CELL_SCHEMA", "production"],
+  ["NEXT_PUBLIC_EAS_ADDRESS", "production"],
+  ["NEXT_PUBLIC_CELL_SCHEMA", "production"],
   ["DEPLOYER_PRIVATE_KEY", "production"],
   ["NEXT_PUBLIC_DEMO_PROFILE_SUBJECT", "production"],
   ["GRIDZ_SIGNER_KEY", "production"],
@@ -58,6 +60,8 @@ const values = {
   NEXT_PUBLIC_SITE_URL: process.env.NEXT_PUBLIC_SITE_URL ?? "https://gridz.bio",
   NEXT_PUBLIC_SITE_DOMAIN: process.env.NEXT_PUBLIC_SITE_DOMAIN ?? "gridz.bio",
   NEXT_PUBLIC_DEMO_PROFILE_SUBJECT: process.env.NEXT_PUBLIC_DEMO_PROFILE_SUBJECT ?? "demo.gridz.eth",
+  NEXT_PUBLIC_EAS_ADDRESS: process.env.NEXT_PUBLIC_EAS_ADDRESS ?? process.env.EAS_ADDRESS ?? "",
+  NEXT_PUBLIC_CELL_SCHEMA: process.env.NEXT_PUBLIC_CELL_SCHEMA ?? process.env.CELL_SCHEMA ?? "",
 };
 
 for (const [key, target] of VARS) {
