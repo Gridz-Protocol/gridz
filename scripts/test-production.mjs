@@ -81,6 +81,7 @@ async function testStaticPages() {
     "/docs/using-gridz",
     "/docs/verification",
     "/claim",
+    "/faq",
     "/find",
     "/for-ai",
   ];
