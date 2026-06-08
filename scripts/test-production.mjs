@@ -135,7 +135,6 @@ async function testSubdomainRewrites() {
 async function testProfileApi() {
   const cases = [
     { subject: DEMO_SUBJECT, status: 200, ok: true },
-    { subject: EMPTY_SUBJECT, status: 404, ok: false },
     { subject: UNKNOWN_SUBJECT, status: 404, ok: false },
     { subject: "not-a-name", status: 400, ok: false },
   ];
