@@ -1,10 +1,13 @@
 #!/usr/bin/env node
 /** Push Gridz env vars to the linked Vercel project for examples/next-app. */
 import { spawnSync } from "node:child_process";
+import { createRequire } from "node:module";
 import { fileURLToPath } from "node:url";
 import { dirname, join } from "node:path";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
+const require = createRequire(join(ROOT, "examples/next-app/package.json"));
+const { privateKeyToAccount } = require("viem/accounts");
 
 const VARS = [
   ["GRIDZ_RPC_URL", "production"],
@@ -25,6 +28,7 @@ const VARS = [
   ["NEXT_PUBLIC_DEMO_PROFILE_SUBJECT", "production"],
   ["GRIDZ_SIGNER_KEY", "production"],
   ["REGISTRAR_PRIVATE_KEY", "production"],
+  ["NEXT_PUBLIC_REGISTRAR_ADDRESS", "production"],
   ["NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID", "production"],
   ["PINATA_JWT", "production"],
   ["PINATA_API_KEY", "production"],
@@ -47,8 +51,19 @@ function add(name, value, env) {
   console.log(`  ${name} (${env})`);
 }
 
+function registrarAddressFromEnv(env) {
+  const key = env.REGISTRAR_PRIVATE_KEY ?? env.DEPLOYER_PRIVATE_KEY;
+  if (!key?.startsWith("0x")) return env.NEXT_PUBLIC_REGISTRAR_ADDRESS ?? "";
+  try {
+    return privateKeyToAccount(key).address;
+  } catch {
+    return env.NEXT_PUBLIC_REGISTRAR_ADDRESS ?? "";
+  }
+}
+
 const values = {
   ...process.env,
+  REGISTRAR_PRIVATE_KEY: process.env.REGISTRAR_PRIVATE_KEY ?? process.env.DEPLOYER_PRIVATE_KEY ?? "",
   NEXT_PUBLIC_GRIDZ_ENS_BASE:
     process.env.NEXT_PUBLIC_GRIDZ_ENS_BASE ?? process.env.GRIDZ_ENS_BASE ?? "gridz.eth",
   NEXT_PUBLIC_GRIDZ_RESOLVER:
@@ -62,6 +77,8 @@ const values = {
   NEXT_PUBLIC_DEMO_PROFILE_SUBJECT: process.env.NEXT_PUBLIC_DEMO_PROFILE_SUBJECT ?? "demo.gridz.eth",
   NEXT_PUBLIC_EAS_ADDRESS: process.env.NEXT_PUBLIC_EAS_ADDRESS ?? process.env.EAS_ADDRESS ?? "",
   NEXT_PUBLIC_CELL_SCHEMA: process.env.NEXT_PUBLIC_CELL_SCHEMA ?? process.env.CELL_SCHEMA ?? "",
+  NEXT_PUBLIC_REGISTRAR_ADDRESS:
+    process.env.NEXT_PUBLIC_REGISTRAR_ADDRESS ?? registrarAddressFromEnv(process.env),
 };
 
 for (const [key, target] of VARS) {

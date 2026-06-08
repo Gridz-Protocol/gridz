@@ -90,6 +90,7 @@ export function buildEnvFiles(env) {
     `NEXT_PUBLIC_SITE_URL=${siteUrl}`,
     `NEXT_PUBLIC_SITE_DOMAIN=${env.NEXT_PUBLIC_SITE_DOMAIN ?? "gridz.bio"}`,
     `NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=${env.NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID ?? ""}`,
+    `NEXT_PUBLIC_REGISTRAR_ADDRESS=${env.NEXT_PUBLIC_REGISTRAR_ADDRESS ?? ""}`,
     `GRIDZ_PG_DSN=${env.GRIDZ_PG_DSN ?? ""}`,
     `EAS_ADDRESS=${env.EAS_ADDRESS ?? ""}`,
     `CELL_SCHEMA=${env.CELL_SCHEMA ?? ""}`,

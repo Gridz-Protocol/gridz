@@ -50,6 +50,11 @@ pnpm -w run check:nomock # no-mock-data guard
 
 Already cloned without submodules? `git submodule update --init --recursive`.
 
+## On-chain (gridz.bio production)
+
+gridz.bio publishes on **Base mainnet** (chain `8453`). Contract addresses:
+[specs/deployments.md](./specs/deployments.md).
+
 ## Develop
 
 ```bash
